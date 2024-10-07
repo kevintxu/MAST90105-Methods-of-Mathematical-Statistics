@@ -1,0 +1,9 @@
+*.pdf
+*.xlsx
+*.xls
+*.docx
+
+.Rhistory
+.RData
+
+temp
