@@ -1,0 +1,745 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     30821,        737]
+NotebookOptionsPosition[     29208,        689]
+NotebookOutlinePosition[     29967,        714]
+CellTagsIndexPosition[     29924,        711]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Skewness and Kurtosis", "Section",
+ CellChangeTimes->{{3.699289593444747*^9, 3.6992895955948105`*^9}, {
+  3.6992897164058075`*^9, 3.69928971760703*^9}, {3.6992899840317554`*^9, 
+  3.6992899917515717`*^9}},ExpressionUUID->"bae15d1a-565f-44dd-a42a-\
+fe5f5df00c43"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", "       ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Mu]", "=", 
+     RowBox[{"Mean", "[", 
+      RowBox[{"BinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Sigma]", "=", " ", 
+     RowBox[{"StandardDeviation", "[", 
+      RowBox[{"BinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Gamma]", "=", 
+     RowBox[{"Skewness", "[", 
+      RowBox[{"BinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Beta]", "=", 
+     RowBox[{"Kurtosis", "[", 
+      RowBox[{"BinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"postext", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"1.0", ",", "1.0"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"DiscretePlot", "[", 
+       RowBox[{
+        RowBox[{"PDF", "[", 
+         RowBox[{
+          RowBox[{"BinomialDistribution", "[", 
+           RowBox[{"n", ",", "p"}], "]"}], ",", "k"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"k", ",", 
+          RowBox[{"Max", "[", 
+           RowBox[{
+            RowBox[{"Round", "[", 
+             RowBox[{"\[Mu]", " ", "-", " ", 
+              RowBox[{"5", "*", "\[Sigma]"}]}], "]"}], ",", "0"}], "]"}], ",", 
+          RowBox[{"Round", "[", 
+           RowBox[{"\[Mu]", " ", "+", " ", 
+            RowBox[{"5", "*", "\[Sigma]"}]}], "]"}], ",", "1"}], "}"}], ",", 
+        RowBox[{"PlotRange", " ", "\[Rule]", " ", "Full"}], ",", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<k\>\"", ",", "\"\<pmf(k)\>\""}], "}"}]}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", "Large"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Text", "[", 
+        RowBox[{
+         RowBox[{"\"\<Skewness = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"NumberForm", "[", 
+            RowBox[{"\[Gamma]", ",", 
+             RowBox[{"{", 
+              RowBox[{"3", ",", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+         RowBox[{"Scaled", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"postext", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"postext", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "+", "0.03"}]}], "}"}], "]"}], 
+         ",", 
+         RowBox[{"Offset", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Text", "[", 
+        RowBox[{
+         RowBox[{"\"\<Kurtosis = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"NumberForm", "[", 
+            RowBox[{"\[Beta]", ",", 
+             RowBox[{"{", 
+              RowBox[{"3", ",", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+         RowBox[{"Scaled", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"postext", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"postext", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "-", " ", "0.1"}]}], "}"}], 
+          "]"}], ",", 
+         RowBox[{"Offset", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", "500", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"p", ",", "0.1", ",", "0.9", ",", "0.2"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.698682666608966*^9, 3.698682701309146*^9}, {
+  3.6986827319805927`*^9, 3.6986828665055847`*^9}, {3.698683012288332*^9, 
+  3.698683069749309*^9}, {3.698683118344192*^9, 3.698683119532508*^9}, {
+  3.6986831655555897`*^9, 3.698683166411055*^9}, {3.6986832806428328`*^9, 
+  3.698683305576293*^9}, {3.698699979398315*^9, 3.6987000931151342`*^9}, {
+  3.698700132250873*^9, 3.698700260021888*^9}, {3.698700294149177*^9, 
+  3.69870032398842*^9}, {3.6987003726357527`*^9, 3.698700579128685*^9}, {
+  3.6987006255864773`*^9, 3.69870062640845*^9}, {3.6992903035103254`*^9, 
+  3.699290308471443*^9}, {3.6992903596236963`*^9, 3.6992903604193115`*^9}, {
+  3.6992904039159527`*^9, 3.6992904289713707`*^9}, {3.6992917454107094`*^9, 
+  3.6992918001983027`*^9}, {3.699292141644951*^9, 3.699292457613416*^9}, {
+  3.699292500093037*^9, 3.6992925263962564`*^9}, {3.699320795023529*^9, 
+  3.699320798681306*^9}},ExpressionUUID->"f09a4605-96d4-4c8e-84eb-\
+54f91a44c7bb"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`n$$ = 500, $CellContext`p$$ = 0.1, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`n$$], 1, 500, 1}, {
+      Hold[$CellContext`p$$], 0.1, 0.9, 0.2}}, Typeset`size$$ = {
+    833., {269., 277.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n$50073$$ = 
+    0, $CellContext`p$50074$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`n$$ = 1, $CellContext`p$$ = 0.1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$50073$$, 0], 
+        Hold[$CellContext`p$$, $CellContext`p$50074$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`\[Mu] = Mean[
+          
+          BinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Sigma] = StandardDeviation[
+          
+          BinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Gamma] = Skewness[
+          
+          BinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Beta] = Kurtosis[
+          
+          BinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`postext = {1., 1.}; Show[
+         DiscretePlot[
+          PDF[
+           
+           BinomialDistribution[$CellContext`n$$, $CellContext`p$$], \
+$CellContext`k], {$CellContext`k, 
+           Max[
+            Round[$CellContext`\[Mu] - 5 $CellContext`\[Sigma]], 0], 
+           Round[$CellContext`\[Mu] + 5 $CellContext`\[Sigma]], 1}, PlotRange -> 
+          Full, AxesLabel -> {"k", "pmf(k)"}, BaseStyle -> Large], 
+         Graphics[
+          Text[
+           StringJoin["Skewness = ", 
+            ToString[
+             NumberForm[$CellContext`\[Gamma], {3, 1}]]], 
+           Scaled[{
+             Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] + 
+             0.03}], 
+           Offset[{-1, 0}]]], 
+         Graphics[
+          Text[
+           StringJoin["Kurtosis = ", 
+            ToString[
+             NumberForm[$CellContext`\[Beta], {3, 1}]]], 
+           Scaled[{
+             Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] - 
+             0.1}], 
+           Offset[{-1, 0}]]]]), 
+      "Specifications" :> {{$CellContext`n$$, 1, 500, 1}, {$CellContext`p$$, 
+         0.1, 0.9, 0.2}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{905., {386., 395.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.6987003291437263`*^9, {3.698700561731632*^9, 3.698700586042796*^9}, {
+   3.698700630968237*^9, 3.698700652320485*^9}, 3.6992894223996844`*^9, 
+   3.699289875182681*^9, 3.6992903131829567`*^9, 3.6992903761304817`*^9, {
+   3.6992904089074936`*^9, 3.6992904333064766`*^9}, 3.699292402933852*^9, 
+   3.699292463843159*^9, {3.6992925104998827`*^9, 3.6992925312335725`*^9}, 
+   3.6993183357131443`*^9, 
+   3.699320802615409*^9},ExpressionUUID->"71fe330d-a710-41c1-85a5-\
+3c5fa753c7f0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", "       ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Mu]", "=", 
+     RowBox[{"Mean", "[", 
+      RowBox[{"NegativeBinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Sigma]", "=", " ", 
+     RowBox[{"StandardDeviation", "[", 
+      RowBox[{"NegativeBinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Gamma]", "=", 
+     RowBox[{"Skewness", "[", 
+      RowBox[{"NegativeBinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Beta]", "=", 
+     RowBox[{"Kurtosis", "[", 
+      RowBox[{"NegativeBinomialDistribution", "[", 
+       RowBox[{"n", ",", "p"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"postext", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"1.0", ",", "1.0"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"DiscretePlot", "[", 
+       RowBox[{
+        RowBox[{"PDF", "[", 
+         RowBox[{
+          RowBox[{"NegativeBinomialDistribution", "[", 
+           RowBox[{"n", ",", "p"}], "]"}], ",", "k"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"k", ",", 
+          RowBox[{"Max", "[", 
+           RowBox[{
+            RowBox[{"Round", "[", 
+             RowBox[{"\[Mu]", " ", "-", " ", 
+              RowBox[{"5", "*", "\[Sigma]"}]}], "]"}], ",", "0"}], "]"}], ",", 
+          RowBox[{"Round", "[", 
+           RowBox[{"\[Mu]", " ", "+", " ", 
+            RowBox[{"5", "*", "\[Sigma]"}]}], "]"}], ",", "1"}], "}"}], ",", 
+        RowBox[{"PlotRange", " ", "\[Rule]", " ", "Full"}], ",", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<k\>\"", ",", "\"\<pmf(k)\>\""}], "}"}]}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", "Large"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Text", "[", 
+        RowBox[{
+         RowBox[{"\"\<Skewness = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"NumberForm", "[", 
+            RowBox[{"\[Gamma]", ",", 
+             RowBox[{"{", 
+              RowBox[{"3", ",", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+         RowBox[{"Scaled", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"postext", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"postext", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "+", "0.03"}]}], "}"}], "]"}], 
+         ",", 
+         RowBox[{"Offset", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Text", "[", 
+        RowBox[{
+         RowBox[{"\"\<Kurtosis = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"NumberForm", "[", 
+            RowBox[{"\[Beta]", ",", 
+             RowBox[{"{", 
+              RowBox[{"3", ",", "1"}], "}"}]}], "]"}], "]"}]}], ",", 
+         RowBox[{"Scaled", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"postext", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"postext", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "-", " ", "0.1"}]}], "}"}], 
+          "]"}], ",", 
+         RowBox[{"Offset", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", "500", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"p", ",", "0.1", ",", "0.9", ",", "0.2"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.699321476308274*^9, 
+  3.6993214916270137`*^9}},ExpressionUUID->"256622a9-a2df-4614-9415-\
+312414f9781f"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`n$$ = 1, $CellContext`p$$ = 0.1, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`n$$], 1, 500, 1}, {
+      Hold[$CellContext`p$$], 0.1, 0.9, 0.2}}, Typeset`size$$ = {
+    935., {300., 309.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n$90696$$ = 
+    0, $CellContext`p$90697$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`n$$ = 1, $CellContext`p$$ = 0.1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$90696$$, 0], 
+        Hold[$CellContext`p$$, $CellContext`p$90697$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`\[Mu] = Mean[
+          
+          NegativeBinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Sigma] = StandardDeviation[
+          
+          NegativeBinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Gamma] = Skewness[
+          
+          NegativeBinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`\[Beta] = Kurtosis[
+          
+          NegativeBinomialDistribution[$CellContext`n$$, $CellContext`p$$]]; \
+$CellContext`postext = {1., 1.}; Show[
+         DiscretePlot[
+          PDF[
+           
+           NegativeBinomialDistribution[$CellContext`n$$, $CellContext`p$$], \
+$CellContext`k], {$CellContext`k, 
+           Max[
+            Round[$CellContext`\[Mu] - 5 $CellContext`\[Sigma]], 0], 
+           Round[$CellContext`\[Mu] + 5 $CellContext`\[Sigma]], 1}, PlotRange -> 
+          Full, AxesLabel -> {"k", "pmf(k)"}, BaseStyle -> Large], 
+         Graphics[
+          Text[
+           StringJoin["Skewness = ", 
+            ToString[
+             NumberForm[$CellContext`\[Gamma], {3, 1}]]], 
+           Scaled[{
+             Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] + 
+             0.03}], 
+           Offset[{-1, 0}]]], 
+         Graphics[
+          Text[
+           StringJoin["Kurtosis = ", 
+            ToString[
+             NumberForm[$CellContext`\[Beta], {3, 1}]]], 
+           Scaled[{
+             Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] - 
+             0.1}], 
+           Offset[{-1, 0}]]]]), 
+      "Specifications" :> {{$CellContext`n$$, 1, 500, 1}, {$CellContext`p$$, 
+         0.1, 0.9, 0.2}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{1007., {380., 389.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.6993214052915363`*^9, 
+  3.699321499147402*^9},ExpressionUUID->"865a3bcc-0bb3-453a-bd55-\
+23cc53e4af17"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Distance between distributions for Sampling with and without Replacement\
+\>", "Section",
+ CellChangeTimes->{{3.6992897413502393`*^9, 3.699289743783886*^9}, {
+  3.6992912184441643`*^9, 3.6992912606548595`*^9}, {3.699295080867428*^9, 
+  3.6992950999156857`*^9}},ExpressionUUID->"fdda5366-040b-4724-9257-\
+43959dfaccfd"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"lower", "=", " ", 
+     RowBox[{"Round", "[", 
+      RowBox[{"Max", "[", 
+       RowBox[{"0", ",", " ", 
+        RowBox[{
+         RowBox[{"n", "*", "p"}], "-", 
+         RowBox[{"5", "*", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"n", "*", "p", "*", 
+             RowBox[{"(", 
+              RowBox[{"1", "-", "p"}], ")"}]}], ")"}], "^", "0.5"}]}]}]}], 
+       "]"}], "]"}]}], ";", "\[IndentingNewLine]", "\t\t", 
+    RowBox[{"upper", " ", "=", 
+     RowBox[{"Round", "[", 
+      RowBox[{"Min", "[", 
+       RowBox[{"n", ",", 
+        RowBox[{
+         RowBox[{"n", "*", "p"}], " ", "+", 
+         RowBox[{"5", "*", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"n", "*", "p", "*", 
+             RowBox[{"(", 
+              RowBox[{"1", "-", "p"}], ")"}]}], ")"}], "^", "0.5"}]}]}]}], 
+       "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"numprobs", " ", "=", " ", 
+     RowBox[{"upper", "-", "lower", "+", "1"}]}], ";", "\[IndentingNewLine]", 
+    
+    RowBox[{"total", "=", 
+     RowBox[{"Max", "[", 
+      RowBox[{"n", ",", "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"b", " ", "=", " ", 
+     RowBox[{"Round", "[", 
+      RowBox[{"total", "*", "p"}], "]"}]}], ";", "\t\t", 
+    "\[IndentingNewLine]", 
+    RowBox[{"hyperg", " ", "=", " ", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{"PDF", "[", 
+        RowBox[{"HypergeometricDistribution", "[", 
+         RowBox[{"n", ",", "b", ",", "total"}], "]"}], "]"}], ",", "numprobs",
+        ",", 
+       RowBox[{"{", 
+        RowBox[{"lower", ",", "upper"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"binom", " ", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{"PDF", "[", 
+        RowBox[{"BinomialDistribution", "[", 
+         RowBox[{"n", ",", "p"}], "]"}], "]"}], ",", "numprobs", ",", 
+       RowBox[{"{", 
+        RowBox[{"lower", ",", "upper"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "\t\t", "\[IndentingNewLine]", "   ", 
+    RowBox[{"mpd", "=", " ", 
+     RowBox[{"0.5", "*", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"Abs", "[", 
+         RowBox[{
+          RowBox[{"hyperg", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "-", 
+          RowBox[{"binom", "[", 
+           RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "numprobs"}], "}"}]}], "]"}]}]}], ";", 
+    "\[IndentingNewLine]", "\t\t", 
+    RowBox[{"postext", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"1.0", ",", "1.0"}], "}"}]}], ";", "\[IndentingNewLine]", "\t ", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"DiscretePlot", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"hyperg", "[", 
+           RowBox[{"[", 
+            RowBox[{"k", "-", "lower", "+", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"binom", "[", 
+           RowBox[{"[", 
+            RowBox[{"k", "-", "lower", "+", "1"}], "]"}], "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"k", ",", "lower", ",", "upper"}], "}"}], ",", 
+        RowBox[{"PlotRange", " ", "\[Rule]", " ", "Full"}], ",", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<k\>\"", ",", "\"\<pmf(k)\>\""}], "}"}]}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", "Large"}], ",", 
+        RowBox[{"PlotLegends", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Without Repl.\>\"", ",", "\"\<With Repl.\>\""}], 
+          "}"}]}]}], "]"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]",
+       "\t", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Text", "[", 
+        RowBox[{
+         RowBox[{"\"\<D = \>\"", "<>", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"NumberForm", "[", 
+            RowBox[{"mpd", ",", 
+             RowBox[{"{", 
+              RowBox[{"4", ",", "2"}], "}"}]}], "]"}], "]"}]}], ",", 
+         RowBox[{"Scaled", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"postext", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"postext", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "+", "0.03"}]}], "}"}], "]"}], 
+         ",", 
+         RowBox[{"Offset", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], 
+       "\[IndentingNewLine]", "]"}]}], "]"}]}], "\[IndentingNewLine]", "\t", 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "100", ",", "10000", ",", "100"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"p", ",", "0.01", ",", "0.99", ",", "0.01"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "100", ",", "20000000", ",", "1000"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.69889793264962*^9, 3.698897943769346*^9}, {
+   3.698898003832329*^9, 3.6988980326431713`*^9}, {3.698944467705922*^9, 
+   3.6989446869372654`*^9}, {3.6989447171152296`*^9, 3.698944819446169*^9}, {
+   3.6989448578324537`*^9, 3.698944950248104*^9}, {3.698944984704137*^9, 
+   3.698945000193293*^9}, {3.6989450367225995`*^9, 3.698945156719557*^9}, {
+   3.6989451895871706`*^9, 3.6989452247018957`*^9}, {3.698945294021998*^9, 
+   3.698945302120648*^9}, {3.698945335411042*^9, 3.6989455244945307`*^9}, {
+   3.698945582556981*^9, 3.6989457137667923`*^9}, {3.698945774305539*^9, 
+   3.698945814122339*^9}, {3.6989458711254177`*^9, 3.6989459006233263`*^9}, {
+   3.6989459501530404`*^9, 3.698945988749666*^9}, 3.698946034358485*^9, {
+   3.6989461256793346`*^9, 3.698946159078495*^9}, 3.698946259675295*^9, {
+   3.698946329696495*^9, 3.698946330434495*^9}, {3.6989464131714954`*^9, 
+   3.6989464222180953`*^9}, 3.698946523992095*^9, {3.698946598748495*^9, 
+   3.698946616251895*^9}, 3.6989466682030954`*^9, {3.698946704142895*^9, 
+   3.698946713361895*^9}, {3.698946836540779*^9, 3.6989468872268767`*^9}, {
+   3.698947312980363*^9, 3.6989473325752306`*^9}, {3.698947777871498*^9, 
+   3.6989478473247204`*^9}, {3.698947944060501*^9, 3.698947947806207*^9}, {
+   3.6989480418291597`*^9, 3.698948111238897*^9}, 3.698948155512041*^9, {
+   3.698948232173297*^9, 3.698948402744877*^9}, {3.6989486014448137`*^9, 
+   3.698948613614419*^9}, {3.698948707172989*^9, 3.6989488116453032`*^9}, 
+   3.698949014299872*^9, {3.698949147433073*^9, 3.6989491529108396`*^9}, {
+   3.6989494517436466`*^9, 3.6989494595926466`*^9}, {3.698952635891811*^9, 
+   3.698952654832427*^9}, {3.6989538070194206`*^9, 3.6989539810091553`*^9}, {
+   3.698954019275011*^9, 3.698954113349019*^9}, {3.698954164408581*^9, 
+   3.6989542053108172`*^9}, {3.6989542481031094`*^9, 
+   3.6989542483059144`*^9}, {3.69895428028806*^9, 3.698954334796438*^9}, 
+   3.6989545241840816`*^9, {3.6989547835393167`*^9, 3.698954787626543*^9}, {
+   3.6989556459970503`*^9, 3.698955719940743*^9}, {3.69895742964513*^9, 
+   3.698957439987449*^9}, {3.6989578401027994`*^9, 3.698957857761434*^9}, {
+   3.6989581368201427`*^9, 3.6989581866008115`*^9}, {3.698960824199038*^9, 
+   3.6989608424998603`*^9}, {3.699293956783927*^9, 3.6992939697006435`*^9}, {
+   3.6992940326771717`*^9, 
+   3.6992940401499386`*^9}},ExpressionUUID->"4c51b49b-f7fe-43fc-9438-\
+e79b807b98e6"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`n$$ = 100, $CellContext`p$$ = 
+    0.01, $CellContext`t$$ = 100, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`n$$], 100, 10000, 100}, {
+      Hold[$CellContext`p$$], 0.01, 0.99, 0.01}, {
+      Hold[$CellContext`t$$], 100, 20000000, 1000}}, Typeset`size$$ = {
+    713., {184., 193.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n$50119$$ = 
+    0, $CellContext`p$50120$$ = 0, $CellContext`t$50121$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`n$$ = 100, $CellContext`p$$ = 
+        0.01, $CellContext`t$$ = 100}, "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$50119$$, 0], 
+        Hold[$CellContext`p$$, $CellContext`p$50120$$, 0], 
+        Hold[$CellContext`t$$, $CellContext`t$50121$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`lower = Round[
+          Max[
+          0, $CellContext`n$$ $CellContext`p$$ - 
+           5 ($CellContext`n$$ $CellContext`p$$ (
+              1 - $CellContext`p$$))^0.5]]; $CellContext`upper = Round[
+          
+          Min[$CellContext`n$$, $CellContext`n$$ $CellContext`p$$ + 
+           5 ($CellContext`n$$ $CellContext`p$$ (
+               1 - $CellContext`p$$))^0.5]]; $CellContext`numprobs = \
+$CellContext`upper - $CellContext`lower + 1; $CellContext`total = 
+        Max[$CellContext`n$$, $CellContext`t$$]; $CellContext`b = 
+        Round[$CellContext`total $CellContext`p$$]; $CellContext`hyperg = 
+        Array[
+          PDF[
+           
+           HypergeometricDistribution[$CellContext`n$$, $CellContext`b, \
+$CellContext`total]], $CellContext`numprobs, {$CellContext`lower, \
+$CellContext`upper}]; $CellContext`binom = Array[
+          PDF[
+           
+           BinomialDistribution[$CellContext`n$$, $CellContext`p$$]], \
+$CellContext`numprobs, {$CellContext`lower, $CellContext`upper}]; \
+$CellContext`mpd = 0.5 Sum[
+           Abs[
+           Part[$CellContext`hyperg, $CellContext`i] - 
+            Part[$CellContext`binom, $CellContext`i]], {$CellContext`i, 
+            1, $CellContext`numprobs}]; $CellContext`postext = {1., 1.}; 
+       Show[
+         DiscretePlot[{
+           Part[$CellContext`hyperg, $CellContext`k - $CellContext`lower + 1], 
+           
+           Part[$CellContext`binom, $CellContext`k - $CellContext`lower + 
+            1]}, {$CellContext`k, $CellContext`lower, $CellContext`upper}, 
+          PlotRange -> Full, AxesLabel -> {"k", "pmf(k)"}, BaseStyle -> Large,
+           PlotLegends -> {"Without Repl.", "With Repl."}], 
+         Graphics[
+          Text[
+           StringJoin["D = ", 
+            ToString[
+             NumberForm[$CellContext`mpd, {4, 2}]]], 
+           Scaled[{
+             Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] + 
+             0.03}], 
+           Offset[{-1, 0}]]]]), 
+      "Specifications" :> {{$CellContext`n$$, 100, 10000, 
+         100}, {$CellContext`p$$, 0.01, 0.99, 0.01}, {$CellContext`t$$, 100, 
+         20000000, 1000}}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{785., {280., 289.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.698946683162095*^9, 3.698946721011495*^9, 
+  3.6989468125470586`*^9, 3.698946911845135*^9, 3.6989473410796165`*^9, 
+  3.6989478548102207`*^9, 3.6989488285232897`*^9, 3.6989490193436413`*^9, 
+  3.6989491639151783`*^9, 3.6989494718840466`*^9, 3.69895407562424*^9, 
+  3.6989543844848433`*^9, 3.698954537194177*^9, 3.698954792134198*^9, 
+  3.6989557290826283`*^9, 3.6989574508457975`*^9, 3.6989581937930803`*^9, 
+  3.6989608552425947`*^9, 3.6992894225244865`*^9, 3.6992898753386836`*^9, 
+  3.699294045411463*^9, 3.699318336359218*^9, 
+  3.699320802873934*^9},ExpressionUUID->"4c5ae110-5f08-4099-8ede-\
+c3549caf5c2d"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1490, 904},
+WindowMargins->{{-3, Automatic}, {Automatic, 1}},
+PrintingCopies->1,
+PrintingPageRange->{1, Automatic},
+Magnification->1.5,
+FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (March 13, 2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[StyleDefinitions -> "Default.nb"]], 
+   Cell[
+    StyleData["Input"], FontSize -> 12]}, WindowSize -> {775, 793}, 
+  WindowMargins -> {{0, Automatic}, {0, Automatic}}, Visible -> False, 
+  FrontEndVersion -> "11.1 for Microsoft Windows (64-bit) (March 13, 2017)", 
+  StyleDefinitions -> "PrivateStylesheetFormatting.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 268, 4, 107, "Section", "ExpressionUUID" -> \
+"bae15d1a-565f-44dd-a42a-fe5f5df00c43"],
+Cell[CellGroupData[{
+Cell[873, 30, 4826, 112, 382, "Input", "ExpressionUUID" -> \
+"f09a4605-96d4-4c8e-84eb-54f91a44c7bb"],
+Cell[5702, 144, 3737, 83, 806, "Output", "ExpressionUUID" -> \
+"71fe330d-a710-41c1-85a5-3c5fa753c7f0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9476, 232, 4025, 101, 466, "Input", "ExpressionUUID" -> \
+"256622a9-a2df-4614-9415-312414f9781f"],
+Cell[13504, 335, 3398, 77, 794, "Output", "ExpressionUUID" -> \
+"865a3bcc-0bb3-453a-bd55-23cc53e4af17"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16951, 418, 328, 6, 107, "Section", "ExpressionUUID" -> \
+"fdda5366-040b-4724-9257-43959dfaccfd"],
+Cell[CellGroupData[{
+Cell[17304, 428, 7253, 163, 494, "Input", "ExpressionUUID" -> \
+"4c51b49b-f7fe-43fc-9438-e79b807b98e6"],
+Cell[24560, 593, 4620, 92, 594, "Output", "ExpressionUUID" -> \
+"4c5ae110-5f08-4099-8ede-c3549caf5c2d"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

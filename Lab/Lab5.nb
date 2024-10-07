@@ -1,0 +1,432 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     18234,        424]
+NotebookOptionsPosition[     17297,        392]
+NotebookOutlinePosition[     18000,        417]
+CellTagsIndexPosition[     17957,        414]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Distance between Binomial and Poisson Distributions", "Section",
+ CellChangeTimes->{{3.6992897413502393`*^9, 3.699289743783886*^9}, {
+  3.6992912184441643`*^9, 3.6992912606548595`*^9}, {3.699295080867428*^9, 
+  3.6992950999156857`*^9}, {3.6994735947575808`*^9, 
+  3.699473609304677*^9}},ExpressionUUID->"b16f78d1-df02-4e12-9421-\
+cc4f25531d69"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"lower", "=", " ", 
+     RowBox[{"Round", "[", 
+      RowBox[{"Max", "[", 
+       RowBox[{"0", ",", " ", 
+        RowBox[{
+         RowBox[{"n", " ", "p"}], "-", 
+         RowBox[{"5", "*", 
+          RowBox[{"StandardDeviation", "[", 
+           RowBox[{"PoissonDistribution", "[", 
+            RowBox[{"n", "*", "p"}], "]"}], "]"}]}]}]}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "\t\t", 
+    RowBox[{"upper", " ", "=", 
+     RowBox[{"Round", "[", 
+      RowBox[{"Min", "[", 
+       RowBox[{"n", ",", 
+        RowBox[{
+         RowBox[{"n", "*", "p"}], " ", "+", 
+         RowBox[{"5", "*", 
+          RowBox[{"StandardDeviation", "[", 
+           RowBox[{"PoissonDistribution", "[", 
+            RowBox[{"n", "*", "p"}], "]"}], "]"}]}]}]}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"numprobs", " ", "=", " ", 
+     RowBox[{"upper", "-", "lower", "+", "1"}]}], ";", "\[IndentingNewLine]", 
+    
+    RowBox[{"total", "=", 
+     RowBox[{"Max", "[", 
+      RowBox[{"n", ",", "t"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"b", " ", "=", " ", 
+     RowBox[{"Round", "[", 
+      RowBox[{"total", "*", "p"}], "]"}]}], ";", "\t\t", 
+    "\[IndentingNewLine]", 
+    RowBox[{"poiss", " ", "=", " ", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{"PDF", "[", 
+        RowBox[{"PoissonDistribution", "[", 
+         RowBox[{"n", "*", "p"}], "]"}], "]"}], ",", "numprobs", ",", 
+       RowBox[{"{", 
+        RowBox[{"lower", ",", "upper"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"binom", " ", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{"PDF", "[", 
+        RowBox[{"BinomialDistribution", "[", 
+         RowBox[{"n", ",", "p"}], "]"}], "]"}], ",", "numprobs", ",", 
+       RowBox[{"{", 
+        RowBox[{"lower", ",", "upper"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "\t\t", "\[IndentingNewLine]", "   ", 
+    RowBox[{"mpd", "=", " ", 
+     RowBox[{"0.5", "*", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"Abs", "[", 
+         RowBox[{
+          RowBox[{"poiss", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "-", 
+          RowBox[{"binom", "[", 
+           RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "numprobs"}], "}"}]}], "]"}]}]}], ";", 
+    "\[IndentingNewLine]", "\t\t", 
+    RowBox[{"postext", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"1.0", ",", "1.0"}], "}"}]}], ";", "\[IndentingNewLine]", "\t ", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"DiscretePlot", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"poiss", "[", 
+           RowBox[{"[", 
+            RowBox[{"k", "-", "lower", "+", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"binom", "[", 
+           RowBox[{"[", 
+            RowBox[{"k", "-", "lower", "+", "1"}], "]"}], "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"k", ",", "lower", ",", "upper"}], "}"}], ",", 
+        RowBox[{"PlotRange", " ", "\[Rule]", " ", "Full"}], ",", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<k\>\"", ",", "\"\<pmf(k)\>\""}], "}"}]}], ",", 
+        RowBox[{"BaseStyle", "\[Rule]", "Large"}], ",", 
+        RowBox[{"PlotMarkers", " ", "\[Rule]", " ", "Automatic"}], ",", 
+        RowBox[{"PlotLegends", "\[Rule]", 
+         RowBox[{"Placed", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<Poisson\>\"", ",", "24"}], "]"}], ",", 
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<Binomial\>\"", ",", "24"}], "]"}]}], "}"}], ",", 
+           "Above"}], "]"}]}], ",", 
+        RowBox[{"Joined", " ", "\[Rule]", " ", "True"}], ",", " ", 
+        RowBox[{"PlotStyle", " ", "\[Rule]", " ", 
+         RowBox[{"AbsoluteThickness", "[", "3", "]"}]}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Style", "[", 
+        RowBox[{
+         RowBox[{"Text", "[", 
+          RowBox[{
+           RowBox[{"\"\<p =\>\"", "<>", 
+            RowBox[{"ToString", "[", 
+             RowBox[{
+              RowBox[{"ScientificForm", "[", 
+               RowBox[{"p", ",", "3"}], "]"}], ",", "TraditionalForm"}], 
+             "]"}]}], ",", 
+           RowBox[{"Scaled", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"postext", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"postext", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "+", "0.03"}]}], "}"}], "]"}],
+            ",", 
+           RowBox[{"Offset", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], ",", 
+         "20"}], "]"}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Style", "[", 
+        RowBox[{
+         RowBox[{"Text", "[", 
+          RowBox[{
+           RowBox[{"\"\<n =\>\"", "<>", 
+            RowBox[{"ToString", "[", 
+             RowBox[{
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"n", ",", "3"}], "]"}], ",", "TraditionalForm"}], 
+             "]"}]}], ",", 
+           RowBox[{"Scaled", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"postext", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"postext", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "+", "0.1"}]}], "}"}], "]"}], 
+           ",", 
+           RowBox[{"Offset", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], ",", 
+         "20"}], "]"}], "\[IndentingNewLine]", "]"}], ",", "\t", 
+      RowBox[{"Graphics", "[", 
+       RowBox[{"Style", "[", 
+        RowBox[{
+         RowBox[{"Text", "[", 
+          RowBox[{
+           RowBox[{"\"\<D =\>\"", "<>", 
+            RowBox[{"ToString", "[", 
+             RowBox[{
+              RowBox[{"ScientificForm", "[", 
+               RowBox[{"mpd", ",", "3"}], "]"}], ",", "TraditionalForm"}], 
+             "]"}]}], ",", 
+           RowBox[{"Scaled", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"postext", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"postext", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "-", "0.06"}]}], "}"}], "]"}],
+            ",", 
+           RowBox[{"Offset", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "0"}], "}"}], "]"}]}], "]"}], ",", 
+         "20"}], "]"}], "\[IndentingNewLine]", "]"}], ",", 
+      RowBox[{"ImageSize", " ", "\[Rule]", " ", "Large"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "\t", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", "1000", ",", "100"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"p", ",", "0.0001", ",", "0.99", ",", "0.01"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.69889793264962*^9, 3.698897943769346*^9}, {
+   3.698898003832329*^9, 3.6988980326431713`*^9}, {3.698944467705922*^9, 
+   3.6989446869372654`*^9}, {3.6989447171152296`*^9, 3.698944819446169*^9}, {
+   3.6989448578324537`*^9, 3.698944950248104*^9}, {3.698944984704137*^9, 
+   3.698945000193293*^9}, {3.6989450367225995`*^9, 3.698945156719557*^9}, {
+   3.6989451895871706`*^9, 3.6989452247018957`*^9}, {3.698945294021998*^9, 
+   3.698945302120648*^9}, {3.698945335411042*^9, 3.6989455244945307`*^9}, {
+   3.698945582556981*^9, 3.6989457137667923`*^9}, {3.698945774305539*^9, 
+   3.698945814122339*^9}, {3.6989458711254177`*^9, 3.6989459006233263`*^9}, {
+   3.6989459501530404`*^9, 3.698945988749666*^9}, 3.698946034358485*^9, {
+   3.6989461256793346`*^9, 3.698946159078495*^9}, 3.698946259675295*^9, {
+   3.698946329696495*^9, 3.698946330434495*^9}, {3.6989464131714954`*^9, 
+   3.6989464222180953`*^9}, 3.698946523992095*^9, {3.698946598748495*^9, 
+   3.698946616251895*^9}, 3.6989466682030954`*^9, {3.698946704142895*^9, 
+   3.698946713361895*^9}, {3.698946836540779*^9, 3.6989468872268767`*^9}, {
+   3.698947312980363*^9, 3.6989473325752306`*^9}, {3.698947777871498*^9, 
+   3.6989478473247204`*^9}, {3.698947944060501*^9, 3.698947947806207*^9}, {
+   3.6989480418291597`*^9, 3.698948111238897*^9}, 3.698948155512041*^9, {
+   3.698948232173297*^9, 3.698948402744877*^9}, {3.6989486014448137`*^9, 
+   3.698948613614419*^9}, {3.698948707172989*^9, 3.6989488116453032`*^9}, 
+   3.698949014299872*^9, {3.698949147433073*^9, 3.6989491529108396`*^9}, {
+   3.6989494517436466`*^9, 3.6989494595926466`*^9}, {3.698952635891811*^9, 
+   3.698952654832427*^9}, {3.6989538070194206`*^9, 3.6989539810091553`*^9}, {
+   3.698954019275011*^9, 3.698954113349019*^9}, {3.698954164408581*^9, 
+   3.6989542053108172`*^9}, {3.6989542481031094`*^9, 
+   3.6989542483059144`*^9}, {3.69895428028806*^9, 3.698954334796438*^9}, 
+   3.6989545241840816`*^9, {3.6989547835393167`*^9, 3.698954787626543*^9}, {
+   3.6989556459970503`*^9, 3.698955719940743*^9}, {3.69895742964513*^9, 
+   3.698957439987449*^9}, {3.6989578401027994`*^9, 3.698957857761434*^9}, {
+   3.6989581368201427`*^9, 3.6989581866008115`*^9}, {3.698960824199038*^9, 
+   3.6989608424998603`*^9}, {3.699293956783927*^9, 3.6992939697006435`*^9}, {
+   3.6992940326771717`*^9, 3.6992940401499386`*^9}, {3.699399651033806*^9, 
+   3.699399756715844*^9}, {3.69939997094655*^9, 3.699400037735627*^9}, {
+   3.6994001293690166`*^9, 3.699400290748353*^9}, {3.699400333174409*^9, 
+   3.699400360584609*^9}, {3.6994004315730124`*^9, 3.699400437196783*^9}, {
+   3.69940056199232*^9, 3.6994005826469088`*^9}, {3.699400692632556*^9, 
+   3.699400701446007*^9}, {3.699401414872097*^9, 3.699401442456221*^9}, 
+   3.6994015758576603`*^9, {3.6994034346964407`*^9, 3.699403448790756*^9}, {
+   3.699404037619879*^9, 3.699404058433111*^9}, {3.6994041412211123`*^9, 
+   3.699404144080777*^9}, {3.699404268800156*^9, 3.699404292548553*^9}, {
+   3.699467995568668*^9, 3.699468045034565*^9}, {3.699468163785932*^9, 
+   3.699468181358488*^9}, {3.699468227653599*^9, 3.69946824118158*^9}, {
+   3.699468280152196*^9, 3.699468325273611*^9}, {3.699468458879266*^9, 
+   3.69946852829427*^9}, {3.699471890872366*^9, 
+   3.699471980804101*^9}},ExpressionUUID->"eb76775c-ca35-4952-a904-\
+27af014b1db1"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`n$$ = 1, $CellContext`p$$ = 0.0801, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`n$$], 1, 1000, 100}, {
+      Hold[$CellContext`p$$], 0.0001, 0.99, 0.01}}, Typeset`size$$ = {
+    864., {287., 351.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n$92595$$ = 
+    0, $CellContext`p$92596$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`n$$ = 1, $CellContext`p$$ = 0.0001}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$92595$$, 0], 
+        Hold[$CellContext`p$$, $CellContext`p$92596$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`lower = Round[
+          Max[0, $CellContext`n$$ $CellContext`p$$ - 5 StandardDeviation[
+             
+             PoissonDistribution[$CellContext`n$$ $CellContext`p$$]]]]; \
+$CellContext`upper = Round[
+          
+          Min[$CellContext`n$$, $CellContext`n$$ $CellContext`p$$ + 
+           5 StandardDeviation[
+              
+              PoissonDistribution[$CellContext`n$$ $CellContext`p$$]]]]; \
+$CellContext`numprobs = $CellContext`upper - $CellContext`lower + 
+         1; $CellContext`total = 
+        Max[$CellContext`n$$, $CellContext`t]; $CellContext`b = 
+        Round[$CellContext`total $CellContext`p$$]; $CellContext`poiss = Array[
+          PDF[
+           
+           PoissonDistribution[$CellContext`n$$ $CellContext`p$$]], \
+$CellContext`numprobs, {$CellContext`lower, $CellContext`upper}]; \
+$CellContext`binom = Array[
+          PDF[
+           
+           BinomialDistribution[$CellContext`n$$, $CellContext`p$$]], \
+$CellContext`numprobs, {$CellContext`lower, $CellContext`upper}]; \
+$CellContext`mpd = 0.5 Sum[
+           Abs[
+           Part[$CellContext`poiss, $CellContext`i] - 
+            Part[$CellContext`binom, $CellContext`i]], {$CellContext`i, 
+            1, $CellContext`numprobs}]; $CellContext`postext = {1., 1.}; 
+       Show[
+         DiscretePlot[{
+           Part[$CellContext`poiss, $CellContext`k - $CellContext`lower + 1], 
+           
+           
+           Part[$CellContext`binom, $CellContext`k - $CellContext`lower + 
+            1]}, {$CellContext`k, $CellContext`lower, $CellContext`upper}, 
+          PlotRange -> Full, AxesLabel -> {"k", "pmf(k)"}, BaseStyle -> Large,
+           PlotMarkers -> Automatic, PlotLegends -> Placed[{
+             Style["Poisson", 24], 
+             Style["Binomial", 24]}, Above], Joined -> True, PlotStyle -> 
+          AbsoluteThickness[3]], 
+         Graphics[
+          Style[
+           Text[
+            StringJoin["p =", 
+             ToString[
+              ScientificForm[$CellContext`p$$, 3], TraditionalForm]], 
+            Scaled[{
+              Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] + 
+              0.03}], 
+            Offset[{-1, 0}]], 20]], 
+         Graphics[
+          Style[
+           Text[
+            StringJoin["n =", 
+             ToString[
+              NumberForm[$CellContext`n$$, 3], TraditionalForm]], 
+            Scaled[{
+              Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] + 
+              0.1}], 
+            Offset[{-1, 0}]], 20]], 
+         Graphics[
+          Style[
+           Text[
+            StringJoin["D =", 
+             ToString[
+              ScientificForm[$CellContext`mpd, 3], TraditionalForm]], 
+            Scaled[{
+              Part[$CellContext`postext, 1], Part[$CellContext`postext, 2] - 
+              0.06}], 
+            Offset[{-1, 0}]], 20]], ImageSize -> Large]), 
+      "Specifications" :> {{$CellContext`n$$, 1, 1000, 
+         100}, {$CellContext`p$$, 0.0001, 0.99, 0.01}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{930., {392., 400.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.698946683162095*^9, 3.698946721011495*^9, 3.6989468125470586`*^9, 
+   3.698946911845135*^9, 3.6989473410796165`*^9, 3.6989478548102207`*^9, 
+   3.6989488285232897`*^9, 3.6989490193436413`*^9, 3.6989491639151783`*^9, 
+   3.6989494718840466`*^9, 3.69895407562424*^9, 3.6989543844848433`*^9, 
+   3.698954537194177*^9, 3.698954792134198*^9, 3.6989557290826283`*^9, 
+   3.6989574508457975`*^9, 3.6989581937930803`*^9, 3.6989608552425947`*^9, 
+   3.6992894225244865`*^9, 3.6992898753386836`*^9, 3.699294045411463*^9, 
+   3.6992967278811374`*^9, 3.699318331647194*^9, 3.699400301709991*^9, {
+   3.6994003369254713`*^9, 3.699400362287274*^9}, 3.6994004484194603`*^9, 
+   3.699400593645006*^9, {3.6994034427867327`*^9, 3.69940345745658*^9}, {
+   3.699404050582868*^9, 3.699404063945735*^9}, 3.699404107275008*^9, 
+   3.699404150829652*^9, {3.699404286400544*^9, 3.699404297216276*^9}, 
+   3.6994680712453127`*^9, 3.699468187585084*^9, {3.6994682500010233`*^9, 
+   3.69946826746695*^9}, 3.699468331998817*^9, {3.6994684876033373`*^9, 
+   3.699468530765644*^9}, 3.699471914112619*^9, 3.6994719536177797`*^9, 
+   3.699471986403821*^9},ExpressionUUID->"4d56a407-c0c6-4aea-ac90-\
+decb098503fd"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{Full, Full},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+PrintingCopies->1,
+PrintingPageRange->{1, Automatic},
+Magnification->1.5,
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 16, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[StyleDefinitions -> "Default.nb"]], 
+   Cell[
+    StyleData["Input"], FontSize -> 12]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 16, 2017)", 
+  StyleDefinitions -> "PrivateStylesheetFormatting.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 350, 5, 96, "Section", "ExpressionUUID" -> \
+"d9c33f70-7c6f-4567-a7e2-a8f7374b81df"],
+Cell[CellGroupData[{
+Cell[955, 31, 10474, 232, 744, "Input", "ExpressionUUID" -> \
+"eb76775c-ca35-4952-a904-27af014b1db1"],
+Cell[11432, 265, 5837, 123, 817, "Output", "ExpressionUUID" -> \
+"4d56a407-c0c6-4aea-ac90-decb098503fd"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

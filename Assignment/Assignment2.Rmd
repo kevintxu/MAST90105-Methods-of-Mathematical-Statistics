@@ -1,0 +1,519 @@
+---
+title: "Assignment 2"
+author: "Kevin Xu"
+date: "3 April 2017"
+output: 
+  word_document:
+    reference_docx: Style_Sheet.docx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(plotly)
+library(dplyr)
+```
+
+## Question 1
+
+### a)
+Let X be the probability distribution of the shooter first miss the shot.
+This is a Geometric distribution. 
+x=2, p=0.1
+$$f(x)=(1-p)^{x-1}*p$$
+$$f(x)=(1-0.1)^{x-1}*0.1$$
+$$f(2)=(1-0.1)^{2-1}*0.1$$
+Answer:
+```{r Q1a, echo=FALSE}
+x=2
+p=0.1
+f1a = function (x) {
+  return((1-p)^(x-1)*p)
+}
+f1a (x)
+```
+Check with built in Geometric Distribution function:
+```{r Q1aCheck, echo=FALSE}
+dgeom(1,p)
+```
+
+### b)
+$$P(X=x)=(1-0.1)^{x-1}*0.1$$
+
+### c)
+If we only consider the shot right after the 3rd:
+$$P(X=4)$$
+$$=(1-0.1)^{4-1}*0.1$$
+$$=`r (1-0.1)^(4-1)*0.1`$$
+If we Consider all shots after the 3rd: 
+$$P(X\ge4)$$
+$$=1-P(X\le3)$$
+$$=1-(\sum_{x=1}^{3}P(X=x))$$
+$$=1-(\sum_{x=1}^{3}((1-0.1)^{x-1}*0.1))$$
+
+Answer:
+```{r Q1c, echo=FALSE}
+x=1:3
+1-(sum(f1a(x)))
+```
+Check with built in Geometric Distribution function:
+```{r Q1cCheck, echo=FALSE}
+1-(dgeom(0,p)+dgeom(1,p)+dgeom(2,p))
+```
+
+### d)
+$$E(X)=\frac{1}{p}$$
+$$E(X)=\frac{1}{0.1}$$
+Answer:
+```{r Q1d, echo=FALSE}
+p=0.1
+1/p
+```
+
+### e)
+Let Y be the probability distribution of the shooter's misses in 10 shots.
+This is a Binomial distribution.
+p=0.1, n=10, x=2
+$$f(x)={{n}\choose{x}}p^{x}(1-p)^{n-x}, x \le n$$
+$$f(x)={{10}\choose{2}}0.1^{2}(1-0.1)^{10-2}$$
+Answer:
+```{r Q1e, echo=FALSE}
+p=0.1
+n=10
+f1e = function (x) {
+  return(choose (n, x)*p^(x)*(1-p)^(10-x))
+}
+f1e(2)
+```
+Check with built in Binomial function:
+```{r Q1eCheck, echo=FALSE}
+dbinom (2,n,p)
+```
+
+### f)
+$$P(Y\ge1)$$
+$$=1-P(Y=0)$$
+$$=1-\left( {{10}\choose{0}}p^{0}(1-p)^{10-0} \right)$$
+Answer:
+```{r Q1f, echo=FALSE}
+1-f1e(0)
+```
+
+Check with built in Binomial function:
+```{r Q1fCheck, echo=FALSE}
+1-dbinom(0,n,p)
+```
+
+### g)
+Let Z be the probability distribution of the number of shots needed to miss 2 times.
+This is a Negative Binomial distribution.
+p=0.1, r=2, x=10
+$$f(x)={{x-1}\choose{r-1}}p^{r}(1-p)^{x-r}, x \ge r$$
+$$f(x)={{10-1}\choose{2-1}}0.1^{2}(1-0.1)^{10-2}$$
+Answer:
+```{r Q1g, echo=FALSE}
+p=0.1
+r=2
+f1g = function (x) {
+  return(choose (x-1, r-1)*p^(r)*(1-p)^(x-r))
+}
+f1g(10)
+```
+
+Check with built in Negative Binomial function:
+```{r Q1gCheck, echo=FALSE}
+dnbinom(10-r,r,p)
+```
+
+### h)
+$$P(Z\le10)$$
+$$=\sum^{10}_{x=2}P(Z=x)$$
+$$=\sum^{10}_{x=2} \left( {{x-1}\choose{2-1}}0.1^{2}(1-0.1)^{x-2} \right)$$
+Answer:
+```{r Q1h, echo=FALSE}
+x=2:10
+sum(f1g(x))
+```
+
+Check with built in Negative Binomial function:
+```{r Q1hCheck, echo=FALSE}
+x=2:10
+sum(dnbinom(x-r,r,p))
+```
+
+### i)
+
+#### i
+Let U be the probability distribution of the shooter's misses in 200 shots with the new probability of 0.01.
+
+p=0.01, n=200, x=2
+$$f(x)={{n}\choose{x}}p^{x}(1-p)^{n-x}, x \le n$$
+$$f(x)={{200}\choose{2}}0.01^{2}(1-0.01)^{200-2}$$
+Answer:
+```{r Q1ii, echo=FALSE}
+p=0.01
+n=200
+f1ii = function (x) {
+  return(choose (n, x)*p^(x)*(1-p)^(n-x))
+}
+f1ii(2)
+```
+Check with built in Binomial function:
+```{r Q1iiCheck, echo=FALSE}
+dbinom (2,n,p)
+```
+
+#### ii
+Let V be the probability distribution of the shooter's misses in 200 shots with the new probability of 0.01.
+p=0.01, n=200, x=2, \(\lambda=200*0.01=2\)
+$$f(x) = \frac {\lambda^{x}e^{-\lambda}}{x!}$$
+$$=f(x) = \frac {2^{2}e^{-2}}{2!}$$
+$$=f(x) = 2e^{-2}$$
+```{r Q1iii, echo=FALSE}
+p=0.01
+n=200
+lambda=n*p
+f1iii = function (x) {
+  return(lambda^x*exp(-lambda)/factorial(x))
+}
+sum(f1iii(2))
+```
+
+Check with built in Negative Binomial function:
+```{r Q1iiiCheck, echo=FALSE}
+dpois(2,lambda)
+```
+
+## Question 2
+
+### a)
+Let X be the probability distribution of breakdowns over 10 week period.
+0.2 breakdowns per week, therefore the rate of breakdown over 10 weeks is: 
+$$\lambda = 0.2*10$$
+$$\lambda = 2$$
+$$f(x) = \frac {\lambda^{x}e^{-\lambda}}{x!}$$
+$$f(3) = \frac {2^{3}e^{-2}}{3!}$$
+$$f(3) = \frac {4e^{-2}}{3}$$
+Answer:
+```{r Q2a,echo=FALSE}
+lambda=10*0.2
+x=3
+f2a = function (x) {
+  return (lambda^x*exp(-lambda)/factorial(x))
+}
+f2a(x)
+```
+Check with built in Poisson function:
+```{r Q2aCheck,echo=FALSE}
+dpois(x,lambda)
+```
+
+### b)
+$$P(X\ge 2)$$
+$$=1 - P(X\le 1)$$
+$$=1-\left(\sum_{x=0}^{1}P(X=x)\right)$$
+$$=1-\left(\sum_{x=0}^{1}\left( \frac {2^{x}e^{-2}}{x!} \right)\right)$$
+Answer:
+```{r Q2b, echo=FALSE}
+x=0:1
+1-sum(f2a(x))
+```
+Check with built in Poisson function:
+```{r Q2bCheck,echo=FALSE}
+ppois(1,lambda,lower.tail = FALSE)
+```
+
+### c)
+Let Y be the random Variable of breakdowns over 52 week period.
+0.2 breakdowns per week, therefore the rate of breakdown over 52 weeks is:
+`r lambda=0.2*52`
+$$\lambda = 0.2*52$$
+$$\lambda = `r lambda`$$
+$$E(Y)=\lambda$$
+$$E(Y)=`r lambda`$$
+$$Var(Y)=\lambda$$
+$$Var(Y)=`r lambda`$$
+
+$$\sigma^2=Var(Y)$$
+$$\sigma=\sqrt{Var(Y)}$$
+$$\sigma=`r sqrt(lambda)`$$
+
+### d)
+The chance compensation is payable:
+$$P(Y\ge 20)$$
+$$=1-P(Y\le 19)$$
+$$=1-\sum_{x=0}^{1}\left( \frac {10.4^{x}e^{-10.4}}{x!} \right)$$
+Answer:
+```{r Q2d1, echo=FALSE}
+lambda=0.2*52
+x=0:19
+f2d = function (x) {
+  return (lambda^x*exp(-lambda)/factorial(x))
+}
+1-sum(f2d(x))
+```
+Check with built in Poisson function:
+```{r Q2d1Check,echo=FALSE}
+ppois(19,lambda,lower.tail = FALSE)
+```
+Time in years to the 20th computer breakdown is a gamma distribution.`r k=20``r lambda=0.2*52`
+k=20, \(\lambda = 0.2*52=`r 0.2*52`\) 
+
+The pdf:
+$$f(x)=\frac{\lambda^{k}x^{k-1}e^{-\lambda x}}{\Gamma(k)}$$
+$$f(x)=\frac{10.4^{20}x^{19}e^{-10.4 x}}{\Gamma(20)}$$
+$$f(x)=\frac{10.4^{20}x^{19}e^{-10.4 x}}{19!}$$
+$$f(x)=1801.242x^{19}e^{-10.4 x}$$
+
+Mean:
+$$\mu=\frac{k}{\lambda}$$
+$$\mu=\frac{`r k`}{`r lambda`}$$
+$$\mu=`r k/lambda`$$
+
+Standard deviation:
+$$\sigma^2=\frac{k}{\lambda^2}$$
+$$\sigma^2=\frac{`r k`}{`r lambda`^2}$$
+$$\sigma^2=`r k/(lambda^2)`$$
+$$\sigma=\sqrt{`r k/(lambda^2)`}$$
+$$\sigma=`r sqrt(k/(lambda^2))`$$
+
+
+## Question 3
+
+### a)
+```{r Q3a, echo=FALSE}
+f3a = Vectorize (function (x) {
+  if (x>=0 && x<1) {
+    x
+  } else if (x>=1 && x<2) {
+    2-x
+  } else {
+    0
+  }
+}
+)
+x=seq(-0.1, 2.1, by=0.1)
+#f3a(x)
+#data.frame(x = x, y = f3a(x))
+plotQ3a <- ggplot(data = data.frame(x = x),aes(x = x)) +
+  stat_function(fun=f3a, aes(y=f3a(x))) +
+  ylab("f(x)")
+plotQ3a
+```
+
+### b)
+$$F(x)=\left \{
+\begin{array}{ll}
+0, & x<0\\
+\int_0^x y\,dy, & 0 \le x < 1\\
+0.5 + \int_1^x 2-y\,dy, & 1 \le x < 2\\
+1, & x\ge 2
+\end{array}
+\right.$$
+
+```{r Q3b, echo=FALSE}
+f3b = Vectorize(function (x) {
+  if (x < 1 & x >= 0) { 
+    integrate(function(y) y, 0, x)$value
+  } else if (x >= 1 & x < 2) {
+    0.5 + integrate(function(y) 2-y, 1, x)$value
+  } else if (x>=2) {
+    1
+  } else {
+    0
+  }
+}
+)
+x=seq(-0.1, 2.1, by=0.1)
+
+plotQ3b <- ggplot(data = data.frame(x = x),aes(x = x)) +
+  stat_function(fun=f3b, aes(y=f3b(x))) +
+  ylab("F(x)")
+plotQ3b
+```
+
+### c)
+$$E(X)=\int_0^2xf(x)\,dx$$
+$$E(X)=\int_0^1xx\,dx+\int_1^{2}x(2-x)\,dx$$
+$$E(X)=\int_0^1x^2\,dx+\int_1^{2}2x-x^2\,dx$$
+$$E(X)=\left[ \frac{1}{3}x^3 \right]_0^1 +\left[x^2-\frac{1}{3}x^3\right]_1^2$$
+$$E(X)=1$$
+Check with built in integration function:
+```{r Q3cCheck, echo=FALSE}
+integrate(function (x){x*f3a(x)},0,2)$value
+```
+
+### d)
+$$E(X^2)=\int_0^2x^2f(x)\,dx$$
+$$E(X^2)=\int_0^1x^2x\,dx+\int_1^2x^2(2-x)\,dx$$
+$$E(X^2)=\int_0^1x^3\,dx+\int_1^{2}2x^2-x^3\,dx$$
+$$E(X^2)=\left[ \frac{1}{4}x^4 \right]_0^1 +\left[\frac{2}{3}x^3-\frac{1}{4}x^4\right]_1^2$$
+$$E(X^2)=\frac{7}{6}$$
+Check with built in integration function:
+```{r Q3dCheck, echo=FALSE}
+integrate(function (x){x^2*f3a(x)},0,2)$value
+```
+
+$$Var(X)=E(X^2)-(E(X))^2$$
+$$Var(X)=\frac{7}{6}-(1)^2$$
+$$Var(X)=\frac{1}{6}$$
+
+Check with built in integration function:
+```{r Q3dCheck2, echo=FALSE}
+integrate(function (x){x^2*f3a(x)},0,2)$value-(integrate(function (x){x*f3a(x)},0,2)$value)^2
+```
+
+### e)
+$$M(t)=\int_0^1e^{tx} x\,dx+\int_1^2e^{tx}(2-x)\,dx$$
+$$M(t)=\int_0^1e^{tx} x\,dx + \int_1^{2} 2e^{tx}-xe^{tx}\,dx$$
+Let \(u = x, u' = 1, v' = e^{tx}, v = \frac{1}{t}e^{tx}\)
+$$\int u v'\,dx=uv-\int u'v\,dx$$
+$$=x \frac{1}{t}e^{tx}-\int \frac{1}{t}e^{tx}\,dx$$
+$$=\left[ x \frac{1}{t}e^{tx}- \frac{1}{t^2}e^{tx} \right]_0^1$$
+$$=\left( \frac{1}{t}e^t-\frac{1}{t^2}e^t-\left(0-\frac{1}{t^2}e^0\right) \right)$$
+$$= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} + \int_1^{2} 2e^{tx}-xe^{tx}\,dx $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} + \left[ \frac{2}{t}e^{tx}- \left(\frac{x}{t}e^{tx}-\frac{1}{t^2}e^{tx}\right) \right]_1^2 $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} + \left[ \frac{2}{t}e^{tx}- \left(\frac{x}{t}e^{tx}-\frac{1}{t^2}e^{tx}\right) \right]_1^2 $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} + \left(\left( \frac{2}{t}e^{2t}- \frac{2}{t}e^{2t}+\frac{1}{t^2}e^{2t} \right) - \left( \frac{2}{t}e^{t}- \frac{1}{t}e^{t}+\frac{1}{t^2}e^{t} \right)\right) $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} +  \frac{2}{t}e^{2t}- \frac{2}{t}e^{2t}+\frac{1}{t^2}e^{2t} - \frac{2}{t}e^{t} + \frac{1}{t}e^{t}-\frac{1}{t^2}e^{t} $$
+$$M(t)= \frac{1}{t}e^t-\frac{1}{t^2}e^t+\frac{1}{t^2} +  \frac{2}{t}e^{2t}- \frac{2}{t}e^{2t}+\frac{1}{t^2}e^{2t} - \frac{2}{t}e^{t} + \frac{1}{t}e^{t}-\frac{1}{t^2}e^{t} $$
+$$M(t)= \frac{1}{t^2}e^{2t} -\frac{2}{t^2}e^{t} +\frac{1}{t^2}$$
+$$M(t)= \frac{1}{t^2}(e^{2t} -2e^{t} +1)$$
+Let \(a=e^t,b=1\)
+$$M(t)=\frac{1}{t^2}(a^2-2ab+b^2)$$
+$$M(t)=\frac{1}{t^2}(a-b)^2$$
+$$M(t)=\frac{1}{t^2}(e^t-1)^2$$
+$$M(0)=unfined$$
+$$\lim_{t \to 0} \frac{e^{2t}-2e^t+1}{t^2}$$
+let \(g(x)=e^{2t}-2e^t+1,h(x)=t^2\)
+$$\lim_{t \to 0}\,g(t)=e^{2t}-2e^t+1=1-2+1=0$$
+$$\lim_{t \to 0}\,h(t)=t^2=0$$
+Then, \(\frac{g(t)}{h(t)}=\frac{g'(t)}{h'(t)}\)
+$$\frac{g'(t)}{h'(t)}=\frac{2e^{2t}-2e^t}{2t}$$
+$$\lim_{t \to 0}\,\frac{g'(t)}{h'(t)}=\frac{2e^{2t}-2e^t}{2t}$$
+let \(g(x)=2e^{2t}-2e^t,h(x)=2t\)
+$$\lim_{t \to 0}\,g(t)=2e^{2t}-2e^t=2-2=0$$
+$$\lim_{t \to 0}\,h(t)=2t=0$$
+Then, \(\frac{g(t)}{h(t)}=\frac{g'(t)}{h'(t)}\)
+$$\lim_{t \to 0}\,\frac{g'(t)}{h'(t)}=\frac{4e^{2t}-2e^{t}}{2}$$
+$$\lim_{t \to 0}\,\frac{4e^{2t}}{2}=\frac{4e^{0}-2e^{0}}{2}=1$$
+
+## Question 4
+Translation from x to y:
+```{r Q4, echo=FALSE}
+y4 = Vectorize (
+  function (x) {
+    min (x, 6-x)
+  }
+)
+x=0:6
+plotQ4 <- ggplot(data = data.frame(x = x),aes(x = x)) +
+  stat_function(fun=y4, aes(y=y4(x))) +
+  ylab("y")
+plotQ4
+
+```
+
+$$P(Y>y) = \left\{
+\begin{array}
+{ll}
+1-0, & y<0\\
+\frac{3-y}{3}, & 0 \le y \le 3\\
+1-1, & y> 3
+\end{array}
+\right.$$
+$$P(Y>y) = \left\{
+\begin{array}
+{ll}
+1, & y<0\\
+1-\frac{y}{3}, & 0 \le y \le 3\\
+0, & y> 3
+\end{array}
+\right.$$
+
+cdf is:
+$$P(Y \le y) = 1-P(Y > y)$$
+$$F(y) = \left\{
+\begin{array}
+{ll}
+0, & y<0\\
+\frac{y}{3}, & 0 \le y \le 3\\
+1, & y> 3
+\end{array}
+\right.$$
+
+$$f(y) = \left\{
+\begin{array}
+{ll}
+0, & y<0\\
+1/3, & 0 \le y \le 3\\
+0, & y> 3
+\end{array}
+\right.$$
+
+
+
+## Question 5
+
+### a)
+This is a Moment Generating Function for Continuous Uniform Distribution:
+$$M(t) = \left\{
+\begin{array}
+{ll}
+\frac{e^{bt}-e^{at}}{(b-a)t}, & t \neq 0\\
+1, & t=0
+\end{array}
+\right.$$
+Therefore \(a=4,b=8\)
+$$E(X)=\frac{1}{2}(a+b)=\frac{1}{2}(8+4)=6$$
+
+### b)
+$$Var(X)=\frac{1}{12}(b-a)^2=\frac{1}{12}(8-4)^2=\frac{1}{12}(4)^2=\frac{16}{12}=\frac{4}{3}$$
+
+### c)
+$$F(x) = \left\{
+\begin{array}
+{ll}
+0, & x<4\\
+\frac{x-4}{4}, & 4 \le x < 8\\
+1, & x \le 8 
+\end{array}
+\right.$$
+
+$$P(4.5 < X < 7.5)=F(7.5)-F(4.5)$$
+$$=F(7.5)-F(4.5)$$
+$$=\frac{7.5-4}{4}-\frac{4.5-4}{4}$$
+$$=`r ((7.5-4)/4)-((4.5-4)/4)` $$
+
+## Question 6
+
+### a)
+Let \(M(t)=y=e^u, u=6t+0.5t^2\)
+$$\frac{dy}{dt}=\frac{dy}{du}\frac{du}{dt}$$
+$$M'(t)=\frac{dy}{dt}=e^{6t+0.5t^2}(t+6)$$
+$$M'(0)=e^{6*0+0.5*0^2}(0+6)$$
+$$M'(0)=`r exp(6*0+0.5*0^2)*(0+6)`$$
+
+### b)
+Let \(M'(t)=y=uv, u=e^{6t+0.5t^2}, v=t+6\)
+$$\frac{dy}{dt}=uv'+u'v$$
+$$M''(t)=\frac{dy}{dt}=(e^{6t+0.5t^2})(1)+(e^{6t+0.5t^2}(t+6))(t+6)$$
+$$M''(0)=(e^{6*0+0.5*0^2})(1)+(e^{6*0+0.5*0^2}(0+6))(0+6)$$
+$$M''(0)=1+6*6=37$$
+$$Var(X) = M''(0)-(M(0))^2$$
+$$Var(X) = 37-(6)^2=37-36=1$$
+
+### c)
+This is a Moment Generating Function for Normal Distribution:
+$$M(t) = e^{\mu t+0.5\sigma^{2}t^2}$$
+Therefore, \(\mu=6,\sigma^2=1\)
+
+$$P(4.5<X<7.5)=P(X<7.5)-P(X<4.5)$$
+$$P(4.5<X<7.5)=`r pnorm(7.5, mean=6, sd=1)`-`r pnorm(4.5, mean=6, sd=1)`$$
+$$P(4.5<X<7.5)=`r pnorm(7.5, mean=6, sd=1) - pnorm(4.5, mean=6, sd=1)`$$
+
+Compared to the the possibilities in Question 5, Question 6 has:
+* the same mean as Question 5
+* lower variance than Question 5
+* due to the lower variance, the probability is higher for the same interval around the mean

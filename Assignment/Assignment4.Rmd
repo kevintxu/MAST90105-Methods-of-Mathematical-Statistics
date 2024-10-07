@@ -1,0 +1,523 @@
+---
+title: "Assignment 4"
+author: "Kevin Xu"
+date: "17 May 2017"
+output: 
+  word_document:
+    reference_docx: Style_Sheet.docx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(plotly)
+library(dplyr)
+library(statmod)
+library(BSDA)
+```
+
+## Question 1
+
+### a)
+
+$$X_i\texttt{~} Poisson(\tau_i)=f_X(x)=\frac{\tau_i^{x}e^{-\tau_i}}{x!}$$
+$$Y_i \texttt{~} Poisson(\beta\tau_i)=f_Y(y)=\frac{(\beta\tau_i)^{y}e^{-\beta\tau_i}}{y!}$$
+
+Since \(X_i\) and \(Y_i\) are mutually independent:
+
+$$
+\begin{aligned}
+f(x,y)&=f_X(x)f_Y(y) \\
+f(x,y)&=\left(\frac{\tau_i^{x}e^{-\tau_i}}{x!}\right)\left(\frac{(\beta\tau_i)^{y}e^{-\beta\tau_i}}{y!}\right) \\
+f(x,y;\beta,\tau_i)&=\left(\frac{\beta^{y}\tau_i^{x+y}e^{-\tau_i(\beta+1)}}{x!y!}\right)
+\end{aligned}
+$$
+
+### b)
+$$\begin{aligned}
+L(\beta,\tau_i)&=\prod_{i=1}^n \left(\frac{\beta^{y_i}\tau_i^{x_i+y_i}e^{-\tau_i(\beta+1)}}{x_i!y_i!}\right) \\
+Ln(L(\beta,\tau_i)) &= Ln \left( \prod_{i=1}^n \left(\frac{\beta^{y_i}\tau_i^{x_i+y_i}e^{-\tau_i(\beta+1)}} {x_i!y_i!}\right) \right) \\
+Ln(L(\beta,\tau_i)) &= Ln (\prod_{i=1}^n \beta^{y_i})+Ln(\prod_{i=1}^n\tau_i^{x_i+y_i})+Ln(\prod_{i=1}^n e^{-\tau_i\beta-\tau_i})-Ln(\prod_{i=1}^nx_i!y_i!) \\
+Ln(L(\beta,\tau_i)) &= \sum_{i=1}^n Ln(\beta^{y_i}) + \sum_{i=1}^n Ln(\tau_i^{x_i+y_i}) + \sum_{i=1}^n Ln(e^{-\tau_i\beta-\tau_i}) - \sum_{i=1}^n Ln(x_i!y_i!) \\
+Ln(L(\beta,\tau_i)) &= Ln(\beta) \sum_{i=1}^n y_i + Ln(\tau_i) \sum_{i=1}^n (x_i+y_i) - \sum_{i=1}^n \tau_i\beta - \sum_{i=1}^n \tau_i - \sum_{i=1}^n Ln(x_i!y_i!) 
+\end{aligned}$$
+
+For \(\beta\):  
+
+$$\begin{aligned}
+\frac{d (Ln(L(\beta,\tau_i)))} {d\beta} &= \frac{\sum_{i=1}^n y_i}{\beta} - \sum_{i=1}^n \tau_i \\
+0 &= \frac{\sum_{i=1}^n y_i}{\beta} - \sum_{i=1}^n \tau_i \\
+\sum_{i=1}^n\tau_i &= \frac{\sum_{i=1}^n y_i}{\beta} \\
+\beta &= \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n \tau_i}
+\end{aligned}$$
+
+For \(\tau_i\):  
+$$\begin{aligned}
+\frac{d (Ln(L(\beta,\tau_i)))} {d\tau_i} &= \frac{\sum_{i=1}^n (x_i+y_i)}{\tau_i} - \beta - 1 \\
+0 &= \frac{\sum_{i=1}^n (x_i+y_i)}{\tau_i} - \beta - 1 \\
+(\beta + 1) &= \frac{\sum_{i=1}^n (x_i+y_i)}{\tau_i} \\
+\tau_i &= \frac{\sum_{i=1}^n (x_i+y_i)}{(\beta + 1)}
+\end{aligned}$$
+
+Substitude \(\beta = \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n \tau_i}\) into \(\tau_i = \frac{\sum_{i=1}^n (x_i+y_i)}{(\beta + 1)}\)  
+
+$$\begin{aligned}
+\tau_i &= \frac{\sum_{i=1}^n x_i + \sum_{i=1}^n y_i}{\left(\frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n \tau_i}\right) + 1} \\
+\tau_i &= \frac{\sum_{i=1}^n x_i+\sum_{i=1}^n y_i}{\left(\frac{\sum_{i=1}^n y_i+\tau_i}{\tau_i}\right)} \\
+1 &= \frac{\sum_{i=1}^n x_i+\sum_{i=1}^n y_i}{\sum_{i=1}^n y_i+\tau_i} \\
+\tau_i &= \sum_{i=1}^n x_i \\
+\beta &= \frac{\sum_{i=1}^n y_i}{\tau_i} \\
+\beta &= \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n x_i}
+\end{aligned}$$
+
+Estimators:
+$$\hat{\tau_i} = \sum_{i=1}^n x_i$$
+$$\hat{\beta} = \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n x_i}$$
+
+
+### c)
+```{r Q1c, echo=FALSE}
+X1c=c(0,0,3,1,7,6,11,7,12,14)
+Y1c=c(1,10,5,8,10,16,8,12,24,21)
+XBar1c=mean(X1c)
+YBar1c=mean(Y1c)
+XSum1c=sum(X1c)
+YSum1c=sum(Y1c)
+beta1c=YSum1c/XSum1c
+tau1c=XSum1c
+```
+
+
+$$\hat{\tau} = `r tau1c`$$
+$$\hat{\beta} = `r beta1c`$$
+
+
+## Question 2
+
+### a)
+MLE:
+$$\begin{aligned}
+L(\mu,\lambda) &= \prod_{i=1}^{n}\left( \left( \frac{\lambda}{2 \pi x_i^3} \right)^\frac{1}{2} e^{-\lambda (x_i- \mu)^2/(2 \mu^2 x_i)} \right) \\
+Ln(L(\mu,\lambda)) &= Ln\left( \prod_{i=1}^{n} \left( \frac{\lambda}{2 \pi x_i^3} \right)^\frac{1}{2} \right) + Ln \left(\prod_{i=1}^n e^{-\lambda (x_i- \mu)^2/(2 \mu^2 x_i)} \right) \\
+Ln(L(\mu,\lambda)) &= \frac{1}{2}\sum_{i=1}^{n}Ln\left( \frac{\lambda}{2 \pi x_i^3} \right) + \sum_{i=1}^n \left( \frac{-\lambda x_i^2 +\lambda 2 x_i \mu - \lambda \mu^2)}{2 \mu^2 x_i} \right) \\
+Ln(L(\mu,\lambda)) &= \frac{n}{2}Ln \left( {\lambda} \right) - \pi \sum_{i=1}^{n}Ln \left( x_i^3 \right) - \frac{\lambda}{2 \mu^2} \sum_{i=1}^n \left( x_i \right) + n \left( \frac{ \lambda }{ \mu } \right) - \frac{\lambda}{2} \sum_{i=1}^n \left( \frac{1}{ x_i} \right)
+\end{aligned}$$
+
+MLE for \(\mu\);
+$$\begin{aligned}
+\frac{d(L(\mu,\lambda))}{d \mu} &= \sum_{i=1}^n \left( \lambda x_i \mu^{-3} \right) - \sum_{i=1}^n \left( \lambda \mu^{-2} \right) \\
+&= \lambda \mu^{-3} \sum_{i=1}^n \left( x_i \right) - n  \lambda \mu^{-2} 
+\end{aligned}$$
+
+$$\begin{aligned}
+0&= \lambda \mu^{-3} \sum_{i=1}^n \left( x_i \right) - n  \lambda \mu^{-2} \\
+n   \mu &=   \sum_{i=1}^n  x_i  \\
+\hat{\mu} &= \frac{\sum_{i=1}^n  x_i }{n} = \bar{x}
+\end{aligned}$$
+
+MLE for \(\lambda\):
+$$\frac{d(L(\mu,\lambda))}{d \lambda} = \frac{n}{2\lambda} - \sum_{i=1}^n \left( \frac{(x_i- \mu)^2}{2 \mu^2 x_i} \right) $$
+$$\begin{aligned}
+0 &= \frac{n}{2\lambda} - \sum_{i=1}^n \left( \frac{(x_i- \mu)^2}{2 \mu^2 x_i} \right) \\
+\frac{n}{2\lambda} &=\sum_{i=1}^n \left( \frac{(x_i- \mu)^2}{2 \mu^2 x_i} \right) \\
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{(x_i- \mu)^2}{ \mu^2 x_i} \right)} 
+\end{aligned}$$
+
+Sub in \(\mu=\bar{x}\):
+$$\begin{aligned}
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{(x_i- \bar{x})^2}{ \bar{x}^2 x_i} \right)} \\
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{x_i}{ \bar{x}^2} - \frac{2 \bar{x}}{ \bar{x}^2} + \frac{1}{x_i} \right)} \\
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{1}{x_i} - \frac{\bar{x}}{ \bar{x}^2} - \frac{\bar{x}}{ \bar{x}^2} + \frac{x_i}{ \bar{x}^2} \right)} \\
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{1}{x_i} - \frac{\bar{x}}{ \bar{x}^2}\right) - \sum_{i=1}^n \left( \frac{\bar{x}}{ \bar{x}^2} - \frac{x_i}{ \bar{x}^2} \right)} \\
+\lambda &=\frac{n}{\sum_{i=1}^n \left( \frac{1}{x_i} - \frac{1}{ \bar{x}}\right) -  \left( \frac{\sum_{i=1}^n\bar{x}-\sum_{i=1}^n x_i}{ \bar{x}^2} \right)} \\
+\hat{\lambda} &=\frac{n}{\sum_{i=1}^n \left( x_i^{-1} - {\bar{x}^{-1}}\right) } 
+\end{aligned}$$
+
+
+### b)
+
+$$\begin{aligned}
+\frac{n\lambda}{\hat{\lambda}} &= \chi^2(n-1) \\
+& P\left(\chi_{1-\alpha/2}^2(n-1) \le \frac{n\lambda}{\hat{\lambda}} \le \chi_{\alpha/2}^2(n-1) \right) \\
+&= P\left(\hat{\lambda}\chi_{1-\alpha/2}^2(n-1) \le n\lambda \le \hat{\lambda}\chi_{\alpha/2}^2(n-1) \right) \\
+&= P\left(\frac{\hat{\lambda}\chi_{1-\alpha/2}^2(n-1)}{n} \le \lambda \le \frac{\hat{\lambda}\chi_{\alpha/2}^2(n-1)}{n} \right) \\
+& \left[\frac{\hat{\lambda}\chi_{1-\alpha/2}^2(n-1)}{n} , \frac{\hat{\lambda}\chi_{\alpha/2}^2(n-1)}{n} \right]
+\end{aligned}$$
+
+Sub \(\hat{\lambda} =\frac{n}{\sum_{i=1}^n \left( x_i^{-1} - {\bar{x}^{-1}}\right) }\) into above:  
+
+$$\left[\frac{\chi_{1-\alpha/2}^2(n-1)}{\sum_{i=1}^n \left( x_i^{-1} - {\bar{x}^{-1}}\right) } , \frac{\chi_{\alpha/2}^2(n-1)}{\sum_{i=1}^n \left( x_i^{-1} - {\bar{x}^{-1}}\right) } \right]$$
+
+### c)
+
+```{r Q2c, echo=FALSE}
+f2a_mu_hat = function (x) {mean(x)}
+f2a_lambda_hat = function (x) {length(x)/sum((1/x)-(1/mean(x)))}
+X2c=c(13.7, 10.2, 9.9, 4.3, 5.6, 45.6, 42.0, 14.1, 3.8, 9.3, 10.6, 91.3, 91.3, 2.2, 3.8, 6.0, 17.8, 131.8, 31.0, 4.2, 2.6, 27.6, 1.7, 7.0, 2.1, 1.5, 7.5, 2.5, 2.4, 51.9, 12.9, 12.3)
+```
+
+#### i)
+
+```{r Q2c_i, echo=FALSE}
+lambda_hat_2c_i = f2a_lambda_hat (X2c)
+lower_95_2c = f2a_lambda_hat (X2c) * qchisq(0.025, df=length(X2c)-1) / length(X2c)
+upper_95_2c = f2a_lambda_hat (X2c) * qchisq(0.975, df=length(X2c)-1) / length(X2c)
+```
+
+$$\hat{\lambda} = `r lambda_hat_2c_i`$$
+95% Confidence Interval:
+$$[`r lower_95_2c`, `r upper_95_2c`]$$
+
+#### ii)
+```{r Q2c_ii, echo=FALSE}
+# calculate 1Q/4Q line
+y_Q2c_ii = quantile(X2c, c(0.25, 0.75))
+
+x_Q2c_ii = statmod::qinvgauss(c(0.25, 0.75), mean=f2a_mu_hat(X2c), shape=f2a_lambda_hat(X2c))
+
+slope_Q2c_ii = diff(y_Q2c_ii)/diff(x_Q2c_ii)
+
+int_Q2c_ii = y_Q2c_ii[1] - slope_Q2c_ii * x_Q2c_ii[1]
+
+p2c_ii = ggplot()+
+  geom_qq(mapping=aes(sample=X2c), distribution = statmod::qinvgauss, dparams = list(mean=f2a_mu_hat(X2c), shape=f2a_lambda_hat(X2c)), colour='darkred') +
+  geom_abline(slope = slope_Q2c_ii, intercept = int_Q2c_ii, linetype = 'dashed')
+p2c_ii
+```
+
+Judging by the QQ plot, it seems the above distribution is appropriate for the data.  
+
+## Question 3
+
+### a)
+
+$$
+\begin{aligned}
+\bar{X} &= kp \\
+\tilde{p} &= \frac{\bar{X}}{\tilde{k}}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+V &= \tilde{k}\tilde{p}(1-\tilde{p}) \\
+\frac{\sum_{i=1}^n(X_i-\bar{X})^2}{n} &= \tilde{k}\tilde{p}-\tilde{k}\tilde{p}^2
+\end{aligned}
+$$
+
+Sub \(\tilde{p} = \frac{\bar{X}}{\tilde{k}}\) into above  
+
+$$
+\begin{aligned}
+\frac{\sum_{i=1}^n(X_i-\bar{X})^2}{n} &= \tilde{k}\frac{\bar{X}}{\tilde{k}}-\tilde{k}\frac{\bar{X}^2}{\tilde{k}^2} \\
+\frac{\sum_{i=1}^n(X_i-\bar{X})^2}{n} &= \bar{X}-\frac{\bar{X}^2}{\tilde{k}} \\
+\frac{\bar{X}^2}{\tilde{k}} &= \bar{X}-\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2 \\
+\tilde{k} &= \frac{\bar{X}^2}{\bar{X}-\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2} 
+\end{aligned}
+$$
+
+### b)
+The following example would give result that does not make sense:
+(6,4,3,9,1,5,6,6,7,9) ~Binom(10, 0.5)
+It would result in negative k and p values.
+```{r Q3b, echo=FALSE}
+f3b_k_tilde = function (x) {
+  mean(x)^2/(mean(x)-(1/length(x))*sum((x-mean(x))^2))
+}
+f3b_p_tilde = function (x) {
+  mean(x)/f3b_k_tilde (x)
+}
+X3b=c(6,4,3,9,1,5,6,6,7,9)
+```
+$$\tilde{k}=`r f3b_k_tilde(X3b)`$$
+$$\tilde{p}=`r f3b_p_tilde(X3b)`$$
+
+## Question 4
+
+### a)
+$$
+\begin{aligned}
+X &\sim NB(r, p) \\
+&\sim NB(5,p) \\
+E(X) &= \frac{5}{p} \\
+Var(X) &= \frac{5(1-p)}{p^2}
+\end{aligned}
+$$
+
+### b)
+$$
+\begin{aligned}
+f(x=8;p) &= \binom{8-1}{5-1}(p)^5(1-p)^{8-5},~~~0\le p \le 1 \\
+f(x=8;p) &= \binom{7}{4}(p)^5(1-p)^{3}
+\end{aligned}
+$$
+
+```{r Q4b, echo=FALSE}
+f4b = function (p) {
+  choose(8-1,4)*(p^5)*(1-p)^(8-5)
+}
+p4b=data.frame(x=c(0,1))
+plotQ4b = ggplot(p4b, mapping = aes(x=x)) +
+  stat_function(fun = f4b) +
+  xlab("p") +
+  ylab("f(x=8;p)")
+plotQ4b
+
+```
+
+### c)
+MLE with sample size of 1:  
+$$
+\begin{aligned}
+L(p) &= \binom{x-1}{4}p^5(1-p)^{x-5} \\
+\frac{d(L(p))}{dp} &= -\binom{x-1}{4}p^4(1-p)^{x-6}(px-5) \\
+0 &= -\binom{x-1}{4}p^4(1-p)^{x-6}(px-5) \\
+p &= 0~or~1~or~\frac{5}{x}   
+\end{aligned}
+$$
+Local maximum is not at 0 or 1, thus MLE is \(\hat{p}=\frac{5}{x}\)  
+  
+MLE for n independent observations on X:  
+
+$$
+\begin{aligned}
+L(p) &= \prod_{i=1}^n\left(\binom{x_i-1}{4}p^5(1-p)^{x_i-5}\right) \\
+Ln(L(p)) &= \sum_{i=1}^nLn\left(\binom{x_i-1}{4}\right)+5n(Ln(p))+ \sum_{i=1}^{n}((x_i-5)Ln(1-p))\\
+\frac{d(Ln(L(p)))}{dp} &= \frac{5n}{p}+\frac{\sum_{i=1}^{n}(x_i-5)}{p-1} \\
+0 &= \frac{5n}{p}+\frac{1}{p-1}(\sum_{i=1}^{n}(x_i-5)) \\
+-\frac{5n}{p} &= \frac{1}{p-1}(\sum_{i=1}^{n}(x_i-5)) \\
+-\frac{p-1}{p} &= \frac{1}{5n}(\sum_{i=1}^{n}(x_i-5)) \\
+\frac{1}{p}-1 &= \frac{1}{5n}(\sum_{i=1}^{n}(x_i-5)) \\
+\frac{1}{p} &= \frac{\sum_{i=1}^{n}(x_i-5)+5n}{5n} \\
+\frac{1}{p} &= \frac{\sum_{i=1}^{n}x_i-5n+5n}{5n} \\
+p &= \frac{5n}{\sum_{i=1}^{n}x_i} \\
+\hat{p} &= \frac{5}{\bar{x}}
+\end{aligned}
+$$
+
+### d)
+
+$$
+\begin{aligned}
+f(x;p) &= \binom{x-1}{4}p^5(1-p)^{x-5} \\
+Ln(f(x;p)) &= Ln\left(\binom{x-1}{4}\right)+5Ln(p)+(x-5)Ln(1-p) \\
+\frac{d(ln(f(x;p)))}{dp} &= \frac{5}{p}-\frac{x-5}{1-p} \\
+\frac{d(ln(f(x;p)))}{dp} &= \frac{5-xp}{p(1-p)} \\
+\frac{d^2(ln(f(x;p)))}{dp^2} &= -5p^{-2}-\frac{x-5}{(1-p)^2} 
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+I(p) &= -E\left(\frac{d^2(ln(f(x;p)))}{dp^2}\right) \\
+&= -E\left(-5p^{-2}-\frac{x-5}{(1-p)^2}\right) \\
+&= E\left(5p^{-2}+\frac{x-5}{(1-p)^2}\right) \\
+&= E\left(5p^{-2}\right) + \frac{1}{(1-p)^2}E\left( x-5 \right) \\
+&= E\left(5p^{-2}\right) + \frac{1}{(1-p)^2}\left( E(x)-E(5) \right) \\
+&= \frac{5}{p^2} + \frac{1}{(1-p)^2}\left( \frac{5}{p}-5 \right) \\
+&= \frac{5}{p^2} + \frac{1}{(1-p)^2}\left( \frac{5-5p}{p} \right) \\
+&= \frac{5}{p^2} + \frac{5(1-p)}{p(1-p)^2} \\
+&= \frac{5}{p^2} + \frac{5}{p(1-p)} \\
+&= \frac{5}{p^2(1-p)} 
+\end{aligned}
+$$
+
+### e)
+$$
+\begin{aligned}
+CRLB &= (nI(p))^{-1} \\
+CRLB &= \left(n\frac{5}{p^2(1-p)}\right)^{-1} \\
+CRLB &= \frac{p^2(1-p)}{5n}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+Var(\hat{p}) &= Var\left(\frac{5}{\bar{x}}\right) \\
+&= 5^2 Var\left(\frac{1}{\bar{x}}\right) \\
+Var(f(X)) &\approx (f'(E(X)))^2 Var(X) \\
+5^2 Var\left(\frac{1}{\bar{x}}\right) &\approx 5^2 \left(\frac{1}{(E(\bar{x}))^2}\right)^2 Var(\bar{x}) \\
+&\approx 5^2 \left(\frac{1}{(E(\bar{x}))^4}\right) Var(\bar{x}) \\
+&\approx 5^2 \left(\frac{p}{5}\right)^4 Var\left(\frac{\sum_{i=1}^nx_i}{n}\right) \\
+&\approx 5^2 \left(\frac{p}{5}\right)^4 \frac{1}{n^2}Var\left(\sum_{i=1}^nx_i\right) \\
+&\approx 5^2 \left(\frac{p}{5}\right)^4 \frac{1}{n^2} \sum_{i=1}^nVar\left(x_i\right) \\
+&\approx 5^2 \left(\frac{p}{5}\right)^4 \frac{1}{n^2} \sum_{i=1}^n \left(\frac{5(1-p)}{p^2}\right) \\
+&\approx 5^2 \left(\frac{p}{5}\right)^4 \frac{1}{n}  \left(\frac{5(1-p)}{p^2}\right) \\
+Var(\hat{p})&\approx \frac{p^2(1-p)}{5n} \\
+\frac{CRLB}{Var(\hat{p})} &\approx 1
+\end{aligned}
+$$
+
+## Question 5
+$$\begin{aligned}
+h(\theta) &=U(0,1) \\
+&= 1 \\
+f(x=1|\theta) &= f(x=1;\theta) \\
+&= \binom{5}{1} \theta(1-\theta)^4 \\
+&= 5 \theta(1-\theta)^4
+\end{aligned}$$
+
+$$\begin{aligned}
+k(\theta|x=1) &= \frac{h(\theta)f(x=1|\theta)}{k(x)} \\
+&= \frac{h(\theta)f(x=1|\theta)}{\int_0^1 h(\theta)f(x=1|\theta) d\theta} \\
+&= \frac{1 * 5 \theta(1-\theta)^4}{\int_0^1 1 * 5 \theta(1-\theta)^4 d\theta} \\
+&= \frac{ \theta(1-\theta)^4}{\int_0^1  \theta(1-\theta)^4 d\theta} \\
+&\sim Beta (2,5) \\
+E(Beta (2,5)) &= \frac{2}{5}
+\end{aligned}$$
+
+```{r Q5, echo=FALSE}
+q5Lower=qbeta(0.025, shape1=2, shape2=5)
+q5Upper=qbeta(1-0.025, shape1=2, shape2=5)
+```
+
+95% posterior probability interval:  
+
+$$[`r q5Lower`,`r q5Upper`]$$
+
+## Question 6
+$$\begin{array}
+{lll}
+\bar{x}=12.56 & s_x^2=24.65 & n=14 \\
+\bar{y}=17.32 & s_y^2=11.01 & m=5
+\end{array}$$
+
+### a)
+$$H_0: \mu_x=\mu_y$$
+$$H_1: \mu_x \neq \mu_y$$
+$$\begin{aligned}
+T &=  \frac{\bar{X}-\bar{Y}}{S_p\sqrt{\frac{1}{n}+\frac{1}{m}}} \\
+S_p &= \sqrt{\frac{(n-1)s_x^2+(m-1)s_y^2}{n+m-2}} \\
+S_p &= \sqrt{\frac{(13)24.65+(4)11.01}{14+5-2}} \\
+S_p &= 4.63 \\
+T &=  \frac{\bar{X}-\bar{Y}}{4.63\sqrt{\frac{1}{n}+\frac{1}{m}}} \\
+T &=  \frac{\bar{X}-\bar{Y}}{4.63\sqrt{\frac{1}{14}+\frac{1}{5}}} \\
+T &=  \frac{\bar{X}-\bar{Y}}{4.63\sqrt{\frac{19}{70}}} \\
+&\sim t(n+m-1) \\
+&\sim t(17)
+\end{aligned}$$
+
+Critical value: \(t_{0.025}(17)\) and \(t_{0.975}(17)\)
+
+$$\begin{aligned}
+T &=  \left\lvert \frac{\bar{X}-\bar{Y}}{4.63\sqrt{\frac{19}{70}}} \right\rvert \\
+&=  \left\lvert \frac{12.56-17.32}{4.63\sqrt{\frac{19}{70}}} \right\rvert \\
+&= 1.97 
+\end{aligned}$$
+
+Reject \(H_0\) if \(1.97 \ge t_{0.975}(17)\)
+
+
+```{r Q6a, echo=FALSE}
+q6a=qt(0.975, df=17)
+```
+
+$$1.97 \ngeq `r q6a`$$
+
+Therefore **not** sufficient evidence to reject \(H_0\) at 95% confidence level.  
+
+### b)
+p-value:
+
+```{r Q6b, echo=FALSE}
+p6b=pt(-1.97, df=17)+(1-pt(1.97, df=17))
+BSDA::tsum.test(mean.x = 12.56, s.x = sqrt(24.65), n.x = 14, mean.y = 17.32, s.y=sqrt(11.01), n.y = 5, alternative = "two.sided", conf.level = 0.95, var.equal = TRUE)
+```
+
+$$\begin{aligned}
+&P(T<-1.97)+P(T>1.97) \\
+=& `r p6b`
+\end{aligned}$$
+
+### c)
+$$T =  \frac{\bar{X}-\bar{Y}-(\mu_x+\mu_y)}{S_p\sqrt{\frac{1}{n}+\frac{1}{m}}} $$
+$$\begin{aligned}
+P\left(-t_{\alpha/2}(17) < T < t_{\alpha/2}(17)\right) &= 1-\alpha \\
+P\left(-t_{\alpha/2}(17) < \frac{\bar{X}-\bar{Y}-(\mu_x+\mu_y)}{S_p\sqrt{\frac{1}{n}+\frac{1}{m}}} < t_{\alpha/2}(17)\right) &= 1-\alpha \\
+P\left(-t_{\alpha/2}(17)S_p\sqrt{\frac{1}{n}+\frac{1}{m}}-(\bar{X}-\bar{Y}) < (\mu_x+\mu_y) < t_{\alpha/2}(17)S_p\sqrt{\frac{1}{n}+\frac{1}{m}} + (\bar{X}-\bar{Y}) \right) &= 1-\alpha 
+\end{aligned}$$
+Confidence Interval:
+
+$$\begin{aligned}
+& (\bar{X}-\bar{Y})\pm t_{\alpha/2}(17)S_p\sqrt{\frac{1}{n}+\frac{1}{m}} \\
+=&(12.56-17.32) \pm 2.11*4.63*\sqrt{\frac{19}{70}} \\
+=&-4.76 \pm 5.09 \\
+& [-9.85,0.33]
+\end{aligned}$$
+
+### d)
+$$H_0: \sigma_x^2=\sigma_y^2$$
+$$H_1: \sigma_x^2 \neq \sigma_y^2$$
+
+$$\frac{s_x^2}{s_y^2} = 2.24$$
+
+$$\begin{aligned}
+\frac{s_y^2}{\sigma_y^2}/\frac{s_x^2}{\sigma_x^2} &\sim F(4,13) \\
+\frac{s_y^2}{s_x^2}*\frac{\sigma_x^2}{\sigma_y^2} &\sim F(4,13) \\
+\frac{\sigma_x^2}{\sigma_y^2} &\sim \frac{s_x^2}{s_y^2}F(4,13)
+\end{aligned}$$
+
+$$P \left(F_{1-\frac{\alpha}{2}}(4,13)\frac{s_x^2}{s_y^2} < \frac{\sigma_x^2}{\sigma_y^2} < F_{\frac{\alpha}{2}}(4,13)\frac{s_x^2}{s_y^2} \right) = 1-\alpha$$
+
+```{r Q6d, echo=FALSE}
+q6d_lower = qf(0.025,4,13)
+q6d_upper = qf(0.975,4,13)
+```
+
+95% confidence interval:  
+$$[`r q6d_lower`, `r q6d_upper`]$$
+
+2.24 is within the 95% confidence interval.
+
+Hence **not** sufficient evidence to reject \(H_o\) at 95% confidence level.  
+
+## Question 7
+
+### a)
+$$H_0: m=130$$
+$$H_1: m > 130$$
+
+Let Exposed be Y.
+
+Y|Y - 130|+/-
+------------- | ------------- | ---------------
+35|-95|-
+56|-74|-
+83|-47|-
+92|-38|-
+128|-2|-
+150|20|+
+176|46|+
+208|78|+
+**Summary**||**3 observations**
+
+
+Let number of observations be \(O_Y\)  
+
+This should follow a Binomial(8,5) distribution.  
+
+$$P(O_Y \ge 7) \approx  0.04 $$
+
+So expect \(O_Y \ge 7\), Observerd \(O_Y = 3\). 
+Hence **not** sufficient evidence to reject \(H_o\) at 95% confidence level.  
+
+```{r Q7a, echo=FALSE}
+p7a = 1 - pbinom(2, 8, 0.5)
+```
+
+Also p-value:  
+$$P(O_Y \ge 3) = `r p7a`$$
+
+$$`r p7a` > 0.05$$
+Hence **not** sufficient evidence to reject \(H_o\) at 95% confidence level.  
+
+### b)
+
+Let Unexposed be X, Exposed be Y
+
+$$H_0: m_X=m_Y$$
+$$H_1: m_X < m_Y$$
+
+```{r Q7b, echo=FALSE}
+wilcox.test(x=c(8,11,12,14,20,43,111),y=c(35,56,83,92,128,150,176,208), alternative = "less", conf.level = 0.99)
+```
+
+p-value < 0.01. Hence **sufficient** evidence to reject \(H_0\) at 99% confidence level.
